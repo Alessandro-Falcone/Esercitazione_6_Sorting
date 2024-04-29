@@ -1,51 +1,3 @@
-// #include <iostream>
-// #include <vector>
-// #include <ctime>
-// #include <cstdlib>
-// #include "SortingAlgorithm.hpp"
-
-// using namespace std;
-// using namespace SortLibrary;
-
-// int main(int argc, char* argv[]) {
-//     if (argc < 2) {
-//         cout << "Usage: " << argv[0] << " <vector_size>" << endl;
-//         return 1;
-//     }
-
-//     int vectorSize = atoi(argv[1]);
-//     vector<int> arr(vectorSize);
-
-//     // Inizializzazione del vettore con valori casuali
-//     srand(time(nullptr));
-//     for (int i = 0; i < vectorSize; ++i) {
-//         arr[i] = rand() % 1000;
-//     }
-
-//     // Copia del vettore per entrambi gli algoritmi di ordinamento
-//     vector<int> arrBubble = arr;
-//     vector<int> arrMerge = arr;
-
-//     // Misura del tempo per Bubble Sort
-//     clock_t startBubble = clock();
-//     BubbleSort(arrBubble);
-//     clock_t endBubble = clock();
-//     double bubbleTime = double(endBubble - startBubble) / CLOCKS_PER_SEC;
-
-//     // Misura del tempo per Merge Sort
-//     clock_t startMerge = clock();
-//     MergeSort(arrMerge);
-//     clock_t endMerge = clock();
-//     double mergeTime = double(endMerge - startMerge) / CLOCKS_PER_SEC;
-
-//     // Output dei risultati
-//     cout << "Vector Size: " << vectorSize << endl;
-//     cout << "Bubble Sort Time: " << bubbleTime << " seconds" << endl;
-//     cout << "Merge Sort Time: " << mergeTime << " seconds" << endl;
-
-//     return 0;
-// }
-
 #include <iostream>
 #include <vector>
 #include <random>
@@ -111,7 +63,7 @@ int main(int argc, char* argv[]){
 
     for(unsigned int n = 0; n < numeroIterazioni; n++){
         // Riempimento del vettore con numeri casuali
-        for(unsigned int i = 0; i < lunghezzaVettore; ++i) {
+        for(unsigned int i = 0; i < lunghezzaVettore; i++) {
             arr[i] = dis(gen);
         }
 
