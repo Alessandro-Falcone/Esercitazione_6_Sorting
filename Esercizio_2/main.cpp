@@ -67,7 +67,7 @@ int main(int argc, char* argv[]){
             arr[i] = dis(gen);
         }
 
-        // Misura del tempo per Bubble Sort
+        // Misura del tempo per Merge Sort
         auto inizioMerge = high_resolution_clock::now();
         MergeSort(arr);
         auto fineMerge = high_resolution_clock::now();
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]){
         mergeDur[n] = durataMerge.count();
     }
 
-    // Calcolo della media delle durate per Bubble Sort
+    // Calcolo della media delle durate per Merge Sort
     double mergeDurataMedia = 0;
     for(unsigned int i = 0; i < numeroIterazioni; i++) {
         mergeDurataMedia += mergeDur[i];
@@ -90,11 +90,14 @@ int main(int argc, char* argv[]){
     cout << "Tempo Merge Sort: " << mergeDurataMedia << " microsecondi" << endl;
 
     if(bubbleDurataMedia < mergeDurataMedia){
-        cout << "L'algoritmo Bubble Sort e' piu' veloce dell'algoritmo Merge Sort (lunghezza vettore: " << lunghezzaVettore << ")" << endl;
+        cout << "L'algoritmo Bubble Sort e' piu' veloce dell'algoritmo Merge Sort per la lunghezza inserita (lunghezza vettore: "
+             << lunghezzaVettore << ")" << endl;
     }else if(bubbleDurataMedia > mergeDurataMedia){
-        cout << "L'algoritmo Bubble Sort e' piu' lento dell'algoritmo Merge Sort (lunghezza vettore: " << lunghezzaVettore << ")" << endl;
+        cout << "L'algoritmo Bubble Sort e' piu' lento dell'algoritmo Merge Sort per la lunghezza inserita (lunghezza vettore: "
+             << lunghezzaVettore << ")" << endl;
     }else if(bubbleDurataMedia == mergeDurataMedia){
-        cout << "Gli algoritmi Bubble Sort e Merge Sort hanno la stessa durata (lunghezza vettore: " << lunghezzaVettore << ")" << endl;
+        cout << "Gli algoritmi Bubble Sort e Merge Sort hanno la stessa durata per la lunghezza inserita (lunghezza vettore: "
+             << lunghezzaVettore << ")" << endl;
     }
 
     return 0;
