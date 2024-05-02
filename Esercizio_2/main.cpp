@@ -14,19 +14,20 @@ int main(int argc, char **argv){
     unsigned int lunghezzaVettore = 0;
 
     if(argc != 2){
-        cerr << "Errore: numero di argomenti passati da linea di comando diverso da 2" << endl;
+        cerr << "Errore: numero di argomenti passati da linea di comando diverso da due" << endl;
         cerr << "Oltre all'eseguibile (primo argomento passato da linea di comando) deve essere passato un secondo argomento da linea di comando: <lunghezza vettore>" << endl;
-        return 1;
+        return -1;
     }else{
 
         // ciclo for che controlla se il secondo argomento passato da linea di comando è un intero,
         // andando a verificare fino al terminatore di stringa \0 se tutti i caratteri sono cifre
         for(char *p = argv[1]; *p != '\0'; p++){
             if(!isdigit(*p)){
+
                 // la condizione dell'if verifica se almeno un carattere non è un cifra
                 // il programma termina e oltre a restituire -1 stampa anche un messaggio d'errore
                 cerr << "Errore: il secondo argomento passato da linea di comando non e' un numero intero" << endl;
-                return 2;
+                return -1;
             }
         }
 
@@ -41,12 +42,12 @@ int main(int argc, char **argv){
     uniform_int_distribution<> dis(1, 1000);
 
     // Ripetizioni per calcolare statistiche
-    const int numeroIterazioni = 72;  // Numero di esecuzioni da confrontare
+    const int numeroIterazioni = 54;  // Numero di esecuzioni da confrontare
 
     if(lunghezzaVettore > 1e+3 || numeroIterazioni > 1e+3){
         cerr << "Dimensione del vettore inserita da linea di comando o numero di iterazioni inserito troppo grande rischio crash del programma" << endl;
         cerr << "Lunghezza vettore: " << lunghezzaVettore << " numero di iterazioni: " << numeroIterazioni << endl;
-        return 3;
+        return -1;
     }
 
     vector<double> bubbleDur(numeroIterazioni);
