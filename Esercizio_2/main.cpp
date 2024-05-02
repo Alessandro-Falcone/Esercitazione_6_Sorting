@@ -54,7 +54,7 @@ int main(int argc, char **argv){
     for(unsigned int n = 0; n < numeroIterazioni; n++){
 
         // Riempimento del vettore con numeri casuali
-        for (unsigned int i = 0; i < lunghezzaVettore; i++) {
+        for(unsigned int i = 0; i < lunghezzaVettore; i++){
             arr[i] = dis(gen);
         }
 
