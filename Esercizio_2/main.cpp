@@ -14,10 +14,8 @@ int main(int argc, char **argv){
     unsigned int lunghezzaVettore = 0;
 
     if(argc != 2){
-        cerr << "Errore: numero di argomenti passati da linea di comando sbagliato" << endl;
-        cerr << "Oltre all'eseguibile che e' sempre il primo argomento passato da linea di comando deve essere passato un'altro argomento da linea di comando" << endl;
-        cerr << "Primo argomento linea di comando: " << argv[0] << endl;
-        cerr << "Secondo argomento linea di comando: <lunghezza vettore>" << endl;
+        cerr << "Errore: numero di argomenti passati da linea di comando diverso da 2" << endl;
+        cerr << "Oltre all'eseguibile (primo argomento passato da linea di comando) deve essere passato un secondo argomento da linea di comando: <lunghezza vettore>" << endl;
         return 1;
     }else{
 
@@ -25,9 +23,9 @@ int main(int argc, char **argv){
         // andando a verificare fino al terminatore di stringa \0 se tutti i caratteri sono cifre
         for(char *p = argv[1]; *p != '\0'; p++){
             if(!isdigit(*p)){
-                // se almeno un carattere non è un cifra (condizione dell'if verifica che ogni carattere non è una cifra)
+                // la condizione dell'if verifica se almeno un carattere non è un cifra
                 // il programma termina e oltre a restituire -1 stampa anche un messaggio d'errore
-                cerr << "Errore: il secondo argomento della linea di comando non e' un numero intero" << endl;
+                cerr << "Errore: il secondo argomento passato da linea di comando non e' un numero intero" << endl;
                 return 2;
             }
         }
@@ -43,7 +41,7 @@ int main(int argc, char **argv){
     uniform_int_distribution<> dis(1, 1000);
 
     // Ripetizioni per calcolare statistiche
-    const int numeroIterazioni = 36;  // Numero di esecuzioni da confrontare
+    const int numeroIterazioni = 72;  // Numero di esecuzioni da confrontare
 
     if(lunghezzaVettore > 1e+3 || numeroIterazioni > 1e+3){
         cerr << "Dimensione del vettore inserita da linea di comando o numero di iterazioni inserito troppo grande rischio crash del programma" << endl;
@@ -87,7 +85,7 @@ int main(int argc, char **argv){
 
     for(unsigned int i = 0; i < numeroIterazioni; i++){
         // Riempimento del vettore con numeri casuali
-        for(unsigned int l = 0; l < lunghezzaVettore; l++) {
+        for(unsigned int l = 0; l < lunghezzaVettore; l++){
             arr[l] = dis(gen);
         }
 
@@ -108,7 +106,7 @@ int main(int argc, char **argv){
     // Calcolo della media delle durate per Merge Sort
     double mergeDurataMedia = 0;
     double mergeSommaDurata = 0;
-    for(unsigned int i = 0; i < numeroIterazioni; i++) {
+    for(unsigned int i = 0; i < numeroIterazioni; i++){
         mergeSommaDurata += mergeDur[i];
     }
     // ho moltiplicato per 1e-3 in modo da non avere numeri troppo grandi espressi in microsecondi
@@ -132,7 +130,7 @@ int main(int argc, char **argv){
     }
 
     if(bubbleDurataMedia == 0){
-        cout << "Tempo in microsecondi per il Bubble Sort pari a zero, dimensione del vettore inserita da linea di comando molto piccola cambiare dimensione"
+        cout << "Tempo per il Bubble Sort pari a zero in microsecondi, dimensione del vettore inserita da linea di comando molto piccola cambiare dimensione"
                 " o calcolare il tempo con un'unita' di misura piu' piccola dei microsecondi" << endl;
     }
 
@@ -151,6 +149,7 @@ int main(int argc, char **argv){
 // La sua complessità computazionale è di O(n^2) dove n è la dimensione dell'array da ordinare
 // questo significa che il tempo di esecuzione cresce quadraticamente con la dimensione dell'array
 // ma questo lo rende poco efficiente per grandi quantità di dati.
+// Per quantità di dati molto piccole il Bubble Sort risulta più veloce del Merge Sort
 
 // Merge Sort: Merge Sort è un algoritmo di ordinamento più efficiente del Bubble Sort.
 // La sua complessità computazionale è di O(n*log(n)) dove n è la dimensione dell'array da ordinare
