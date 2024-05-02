@@ -35,11 +35,6 @@ int main(int argc, char **argv){
         lunghezzaVettore = stoi(argv[1]);
     }
 
-    if(lunghezzaVettore > 1e+3){
-        cerr << "Dimensione del vettore inserita da linea di comando troppo grande rischio crash del programma" << endl;
-        return 3;
-    }
-
     vector<unsigned int> arr(lunghezzaVettore);
 
     // Inizializzazione del vettore con valori casuali
@@ -49,13 +44,20 @@ int main(int argc, char **argv){
 
     // Ripetizioni per calcolare statistiche
     const int numeroIterazioni = 36;  // Numero di esecuzioni da confrontare
+
+    if(lunghezzaVettore > 1e+3 || numeroIterazioni > 1e+3){
+        cerr << "Dimensione del vettore inserita da linea di comando o numero di iterazioni inserito troppo grande rischio crash del programma" << endl;
+        cerr << "Lunghezza vettore: " << lunghezzaVettore << " numero di iterazioni: " << numeroIterazioni << endl;
+        return 3;
+    }
+
     vector<double> bubbleDur(numeroIterazioni);
 
-    for(unsigned int n = 0; n < numeroIterazioni; n++){
+    for(unsigned int i = 0; i < numeroIterazioni; i++){
 
         // Riempimento del vettore con numeri casuali
-        for(unsigned int i = 0; i < lunghezzaVettore; i++){
-            arr[i] = dis(gen);
+        for(unsigned int l = 0; l < lunghezzaVettore; l++){
+            arr[l] = dis(gen);
         }
 
         // Misura del tempo per Bubble Sort
@@ -67,9 +69,9 @@ int main(int argc, char **argv){
         // e il tempo di inizio dell'algoritmo usando come unità di misura i microsecondi
         auto durataBubble = duration_cast<microseconds>(fineBubble - inizioBubble);
 
-        // mi salvo nel vettore bubbleDur[n] quanto tempo ci ha messo l'algoritmo Bubble Sort
+        // mi salvo nel vettore bubbleDur[i] quanto tempo ci ha messo l'algoritmo Bubble Sort
         // per ordinare il vettore ad ogni iterazione (numeroIterazioni)
-        bubbleDur[n] = durataBubble.count();
+        bubbleDur[i] = durataBubble.count();
     }
 
     // Calcolo della media delle durate per Bubble Sort
@@ -78,23 +80,29 @@ int main(int argc, char **argv){
     for(unsigned int i = 0; i < numeroIterazioni; i++) {
         bubbleSommaDurata += bubbleDur[i];
     }
-
-    bubbleDurataMedia = (bubbleSommaDurata*1e-3)/numeroIterazioni; // ho moltiplicato per 1e-3 in modo da non avere numeri troppo grandi espressi in microsecondi
+    // ho moltiplicato per 1e-3 in modo da non avere numeri troppo grandi espressi in microsecondi
+    bubbleDurataMedia = (bubbleSommaDurata*1e-3)/numeroIterazioni;
 
     vector<double> mergeDur(numeroIterazioni);
 
-    for(unsigned int n = 0; n < numeroIterazioni; n++){
+    for(unsigned int i = 0; i < numeroIterazioni; i++){
         // Riempimento del vettore con numeri casuali
-        for(unsigned int i = 0; i < lunghezzaVettore; i++) {
-            arr[i] = dis(gen);
+        for(unsigned int l = 0; l < lunghezzaVettore; l++) {
+            arr[l] = dis(gen);
         }
 
         // Misura del tempo per Merge Sort
         auto inizioMerge = high_resolution_clock::now(); // misura il tempo di inizio dell'algoritmo
         MergeSort(arr); // esegui Merge Sort sull'array
         auto fineMerge = high_resolution_clock::now(); // misura il tempo di fine dell'algoritmo
-        auto durataMerge = duration_cast<microseconds>(fineMerge - inizioMerge); // calcolo la differenza tra il tempo di fine dell'algoritmo e il tempo di inizio dell'algoritmo usando come unità di misura i microsecondi
-        mergeDur[n] = durataMerge.count(); // mi salvo nel vettore mergeDur[n] quanto tempo ci ha messo l'algoritmo Merge Sort per ordinare il vettore ad ogni iterazione (numeroIterazioni)
+
+        // calcolo la differenza tra il tempo di fine dell'algoritmo
+        // e il tempo di inizio dell'algoritmo usando come unità di misura i microsecondi
+        auto durataMerge = duration_cast<microseconds>(fineMerge - inizioMerge);
+
+        // mi salvo nel vettore mergeDur[i] quanto tempo ci ha messo l'algoritmo Merge Sort
+        // per ordinare il vettore ad ogni iterazione (numeroIterazioni)
+        mergeDur[i] = durataMerge.count();
     }
 
     // Calcolo della media delle durate per Merge Sort
@@ -103,14 +111,15 @@ int main(int argc, char **argv){
     for(unsigned int i = 0; i < numeroIterazioni; i++) {
         mergeSommaDurata += mergeDur[i];
     }
-    mergeDurataMedia = (mergeSommaDurata*1e-3)/numeroIterazioni; // ho moltiplicato per 1e-3 in modo da non avere numeri troppo grandi espressi in microsecondi
+    // ho moltiplicato per 1e-3 in modo da non avere numeri troppo grandi espressi in microsecondi
+    mergeDurataMedia = (mergeSommaDurata*1e-3)/numeroIterazioni;
 
     // Output dei risultati
     cout << "Lunghezza vettore: " << lunghezzaVettore << endl;
     if((bubbleDurataMedia*1e-3) > 1e-3 || (mergeDurataMedia*1e-3) > 1e-3){
 
         // se è soddisfatta la condizione dell'if e quindi la media del tempo del Bubble Sort o la media del tempo del Merge Sort
-        // sono maggiori di 1e-3 millisecondi cambio l'unità di misura in output da microsecondi a millisecondi
+        // moltiplicati per 1e-3 sono maggiori di 1e-3 millisecondi cambio l'unità di misura in output da microsecondi a millisecondi
         cout << "Media tempo Bubble Sort su " << numeroIterazioni << " esecuzioni: "
              << fixed << scientific << setprecision(7) << bubbleDurataMedia << " millisecondi" << endl;
         cout << "Media tempo Merge Sort su " << numeroIterazioni << " esecuzioni: "
@@ -122,8 +131,8 @@ int main(int argc, char **argv){
         cout << "Media tempo Merge Sort su " << numeroIterazioni << " esecuzioni: " << fixed << scientific << setprecision(7) << mergeDurataMedia << " microsecondi" << endl;
     }
 
-    if(bubbleDurataMedia == 0 || mergeDurataMedia == 0){
-        cout << "Errore: tempo in microsecondi pari a zero, dimensione del vettore inserita da linea di comando molto piccola cambiare dimensione"
+    if(bubbleDurataMedia == 0){
+        cout << "Tempo in microsecondi per il Bubble Sort pari a zero, dimensione del vettore inserita da linea di comando molto piccola cambiare dimensione"
                 " o calcolare il tempo con un'unita' di misura piu' piccola dei microsecondi" << endl;
     }
 
@@ -138,7 +147,7 @@ int main(int argc, char **argv){
     return 0;
 }
 
-// Bubble Sort: algoritmo di ordinamento semplice ma inefficiente per grandi insiemi di dati.
+// Bubble Sort: algoritmo di ordinamento semplice ma inefficiente per grandi quantità di dati.
 // La sua complessità computazionale è di O(n^2) dove n è la dimensione dell'array da ordinare
 // questo significa che il tempo di esecuzione cresce quadraticamente con la dimensione dell'array
 // ma questo lo rende poco efficiente per grandi quantità di dati.
@@ -146,4 +155,4 @@ int main(int argc, char **argv){
 // Merge Sort: Merge Sort è un algoritmo di ordinamento più efficiente del Bubble Sort.
 // La sua complessità computazionale è di O(n*log(n)) dove n è la dimensione dell'array da ordinare
 // questo lo rende significativamente più veloce rispetto al Bubble Sort,
-// specialmente quando si tratta di grandi volumi di dati.
+// specialmente quando si tratta di grandi quantità di dati.
